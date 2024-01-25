@@ -501,7 +501,7 @@ func (client *Client) getVaultAPISecret(jwtFile string, o *clientOptions) (*vaul
 
 	case APPROLEAuthMethod:
 	// "github.com/hashicorp/vault/api/auth/approle"
-		appAuth, err := approle.NewAppRoleAuth(o.role, o.token, approle.WithMountPath(o.authPath))
+		appAuth, err := approle.NewAppRoleAuth(o.role, &SecretID{FromString: o.token}, approle.WithMountPath(o.authPath))
 		if err != nil {
 			return nil, err
 		}
