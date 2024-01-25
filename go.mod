@@ -1,4 +1,4 @@
-module github.com/bank-vaults/vault-sdk
+module github.com/sbelondr/vault-sdk
 
 go 1.19
 
