@@ -32,6 +32,7 @@ import (
 	"github.com/hashicorp/vault/api/auth/azure"
 	"github.com/hashicorp/vault/api/auth/gcp"
 	"github.com/hashicorp/vault/api/auth/kubernetes"
+	"github.com/hashicorp/vault/api/auth/approle"
 )
 
 const (
@@ -175,6 +176,9 @@ const (
 
 	// NamespacedSecretAuthMethod is used for per namespace secrets
 	NamespacedSecretAuthMethod ClientAuthMethod = "namespaced"
+
+	// APPROLEAuthMethod is used for the approle auth method
+	APPROLEAuthMethod ClientAuthMethod = "approle"
 )
 
 // Client is a Vault client with Kubernetes support, token automatic renewing and
@@ -494,6 +498,15 @@ func (client *Client) getVaultAPISecret(jwtFile string, o *clientOptions) (*vaul
 			return kubernetesAuth.Login(context.Background(), client.RawClient())
 		}
 		fallthrough
+
+	case APPROLEAuthMethod:
+	// "github.com/hashicorp/vault/api/auth/approle"
+		appAuth, err := approle.NewAppRoleAuth(o.role, o.token, approle.WithMountPath(o.authPath))
+		if err != nil {
+			return nil, err
+		}
+		return appAuth.Login(context.Background(), client.RawClient())
+
 
 	// 'jwt' or 'kubernetes', ends up doing JWT as it also works for Kubernetes
 	default:
