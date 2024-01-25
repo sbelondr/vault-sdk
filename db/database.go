@@ -21,7 +21,7 @@ import (
 	"emperror.dev/errors"
 	vaultapi "github.com/hashicorp/vault/api"
 
-	"github.com/bank-vaults/vault-sdk/vault"
+	"github.com/sbelondr/vault-sdk/vault"
 )
 
 // DynamicSecretDataSource creates a SQL data source but instead of passing username:password
